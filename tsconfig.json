@@ -25,6 +25,8 @@
       "@/*": ["src/*"],
       "~/*": ["public/*"]
     },
+    // define rhino3dm
+    "typeRoots": ["./types", "./node_modules/@types"]
     
   },
   "include": ["src"],
