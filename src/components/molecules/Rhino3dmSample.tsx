@@ -9,7 +9,13 @@ function Rhino3dmSample() {
   
   const [sphere, setSphere] = useState<Sphere>()
 
-  const onClick = () => {
+  const onChange = (e: any) => {
+    window.rhino3dm().then((Module: RhinoModule) => {
+      setSphere(new Module.Sphere([1, 2, 3], Number(e.target.value)))
+      console.log(sphere)
+    })
+  }
+  const downloadSphereAsStl = () => {
     window.rhino3dm().then((Module: RhinoModule) => {
       const doc: File3dm = new Module.File3dm()
   
@@ -50,7 +56,8 @@ function Rhino3dmSample() {
           ? "生成された Sphere の直径は " + sphere.diameter + " です。"
           : "Sphere はまだ作成されていません"}
       </p>
-      <button onClick={()=>onClick()}>DOWNLOAD</button>
+        <input type="range" min="1" max="100" onChange={onChange} />
+      <button onClick={()=>downloadSphereAsStl()}>DOWNLOAD</button>
     </>
   )
 }
