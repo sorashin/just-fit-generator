@@ -9,6 +9,7 @@ function Rhino3dmSample() {
   
   const [sphere, setSphere] = useState<Sphere>()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
     window.rhino3dm().then((Module: RhinoModule) => {
       setSphere(new Module.Sphere([1, 2, 3], Number(e.target.value)))

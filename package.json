@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/csg": "^3.0.0",
     "@react-three/drei": "^9.84.1",
     "@react-three/fiber": "^8.14.2",
     "@types/three": "^0.156.0",
+    "jotai": "^2.4.2",
+    "leva": "^0.9.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.156.1"
