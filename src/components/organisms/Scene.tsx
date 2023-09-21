@@ -8,7 +8,7 @@ import { useControls } from "leva";
 
 
 function Scene() {
-  const { height, depth, width } = useControls({
+  const { height, depth, width, radius } = useControls({
     height: {
       value: .5,
       min: 0,
@@ -27,12 +27,18 @@ function Scene() {
       max: 2,
       step: .01,
     },
+    radius: {
+      value: .03,
+      min: 0,
+      max: .2,
+      step: .01,
+    },
   })
   return (
     <div className='fixed inset-0'>
     <Canvas camera={{ fov: 70, position: [0, 0, 3] }}>
       <OrbitControls />
-      <Cases width={width} depth={depth} height={height} radius={0.03} split={{
+      <Cases width={width} depth={depth} height={height} radius={radius} split={{
           x: 3,
           y: 3
         }} gap={0.01} thickness={.01} />

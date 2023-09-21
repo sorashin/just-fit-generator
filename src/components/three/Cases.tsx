@@ -45,8 +45,9 @@ type CaseProps = {
     height: number;
     radius: number;
     thickness: number;
+    position: [number, number, number];
   };
-const Case = ({ width, depth, height, radius, thickness}:CaseProps) => {
+const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) => {
     useEffect(()=>{
         console.log(width, depth, height, radius, thickness)
     })
@@ -54,10 +55,10 @@ const Case = ({ width, depth, height, radius, thickness}:CaseProps) => {
         
         <mesh castShadow receiveShadow>
             <Geometry>
-                <Base rotation={[0, 0, 0]} position={[0,0,0]}>
+                <Base rotation={[0, 0, 0]} position={position}>
                     <CaseGeometry width={width} depth={depth} height={height} radius={radius}/>
                 </Base>
-                <Subtraction rotation={[0, 0, 0]} position={[0, thickness, 0]}>
+                <Subtraction rotation={[0, 0, 0]} position={[position[0], thickness, position[2]]}>
                     <CaseGeometry width={width-thickness*2} depth={depth-thickness*2} height={height} radius={radius}/>
                     {/* <cylinderGeometry args={[0.1, 0.1, 1, 32, 1]} /> */}
                 </Subtraction>
@@ -80,8 +81,25 @@ const Case = ({ width, depth, height, radius, thickness}:CaseProps) => {
     useEffect(()=>{
         console.log(width, depth, height, radius, split, gap, thickness)
     })
+    const dividedWidth = (width-(split.x-1)*gap)/split.x
+    const dividedDepth = (depth-(split.y-1)*gap)/split.y
     return(
-        <Case width={(width-2*gap)/split.x} depth={(depth-2*gap)/split.y} height={height} radius={radius} thickness={thickness}></Case>
+        <group>
+
+            
+            {
+                (function () {
+                    const list = [];
+                    for (let i = 0; i < split.x; i++) {
+                        for (let j = 0; j < split.y; j++) {
+                            list.push(<Case position={[(dividedWidth+gap)*i,0,(dividedDepth+gap)*j]} width={dividedWidth} depth={dividedDepth} height={height} radius={radius} thickness={thickness}></Case>);
+                        }
+                    }
+                    return list;
+                }())
+            }
+        </group>
+        
     )
   }
   
