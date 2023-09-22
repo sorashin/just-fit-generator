@@ -2,8 +2,7 @@
 import { useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as THREE from 'three';
 import { Geometry, Base, Subtraction } from '@react-three/csg'
-import { useAtom } from 'jotai';
-import { SplitParameter, offsetAtom, radiusAtom, sizeAtom, splitAtom, thicknessAtom } from '@/store/parameterAtoms';
+import { SplitParameter} from '@/store/parameterAtoms';
 
 
 type CaseGeometryProps = {
