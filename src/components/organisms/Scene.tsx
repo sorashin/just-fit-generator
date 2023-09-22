@@ -7,8 +7,9 @@ import { useControls } from "leva";
 
 
 
+
 function Scene() {
-  const { height, depth, width, radius } = useControls({
+  const { height, depth, width, radius, splitX, splitY } = useControls({
     height: {
       value: .5,
       min: 0,
@@ -33,14 +34,27 @@ function Scene() {
       max: .2,
       step: .01,
     },
+    splitX: {
+      value: 3,
+      min: 1,
+      max: 10,
+      step: 1,
+      
+    },
+    splitY: {
+      value: 3,
+      min: 1,
+      max: 10,
+      step: 1,
+    }
   })
   return (
     <div className='fixed inset-0'>
     <Canvas camera={{ fov: 70, position: [0, 0, 3] }}>
       <OrbitControls />
       <Cases width={width} depth={depth} height={height} radius={radius} split={{
-          x: 3,
-          y: 3
+          x: splitX,
+          y: splitY
         }} gap={0.01} thickness={.01} />
       <primitive object={new THREE.AxesHelper(10)} />
       <ambientLight/>

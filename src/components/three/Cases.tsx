@@ -26,18 +26,20 @@ const CaseGeometry = ({ width, height, radius, depth }: CaseGeometryProps) => {
         s.absarc(-width / 2 + radius, -depth / 2 + radius, radius, 1.5 * Math.PI, 1 * Math.PI, true)
         return new THREE.Shape(s.getPoints(10))
     }, [width, height, radius, depth])
-    const config = useMemo(() => ({ height, bevelEnabled: false }), [height])
+    const config = useMemo(() => ({ depth:height, bevelEnabled: false }), [height])
     useLayoutEffect(() => {
-        // 中心に移動
         geometry.current!.translate(0, 0, -height / 2)
-
-        // 上向ける
+        // 上向きに回転
         geometry.current!.rotateX(Math.PI / 2)
-
+        // BOXの底面をXZ平面に合わせる
+        geometry.current!.translate(0, height / 2, 0)
+        
         geometry.current!.computeVertexNormals()
     }, [shape])
     return <extrudeGeometry ref={geometry} args={[shape, config]} />
 }
+
+
 type CaseProps = {
     width: number;
     depth: number;
@@ -46,9 +48,20 @@ type CaseProps = {
     thickness: number;
     position: [number, number, number];
   };
+
+// const Sample = ({ width, depth, height, radius, thickness, position}:CaseProps) => {
+//         return(
+//             <mesh position={[0,2,0]} >
+//                 <CaseGeometry width={width} depth={depth} height={height} radius={radius}/>
+//                 {/* mesh physical material */}
+//                 <meshPhysicalMaterial color="#0cf73f" />
+//             </mesh>
+//         )
+//     }
+
 const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) => {
     useEffect(()=>{
-        console.log(width, depth, height, radius, thickness)
+        console.log('width:',width, 'depth', depth, 'height', height, 'radius', radius, 'thickness', thickness)
     })
     return (
         
@@ -77,13 +90,12 @@ const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) =>
   };
   //add props
   const Cases = ({ width, depth, height, radius, split, gap, thickness }: CasesProps) => {
-    useEffect(()=>{
-        console.log(width, depth, height, radius, split, gap, thickness)
-    })
+    
     const dividedWidth = (width-(split.x-1)*gap)/split.x
     const dividedDepth = (depth-(split.y-1)*gap)/split.y
     return(
-        <group>
+        // BOX軍を中央寄せ
+        <group position={[dividedWidth/2-width/2,0,dividedDepth/2-depth/2]}>
 
             
             {
