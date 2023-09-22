@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as THREE from 'three';
-import { Geometry, Base, Subtraction } from '@react-three/csg'
+import { Geometry, Base, Subtraction, Addition } from '@react-three/csg'
 import { SplitParameter} from '@/store/parameterAtoms';
 
 
@@ -46,6 +46,7 @@ type CaseProps = {
     height: number;
     radius: number;
     thickness: number;
+    offset: number;
     position: [number, number, number];
   };
 
@@ -59,7 +60,7 @@ type CaseProps = {
 //         )
 //     }
 
-const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) => {
+const Case = ({ width, depth, height, radius, thickness, position, offset}:CaseProps) => {
     useEffect(()=>{
         console.log('width:',width, 'depth', depth, 'height', height, 'radius', radius, 'thickness', thickness)
     })
@@ -72,8 +73,20 @@ const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) =>
                 </Base>
                 <Subtraction rotation={[0, 0, 0]} position={[position[0], thickness, position[2]]}>
                     <CaseGeometry width={width-thickness*2} depth={depth-thickness*2} height={height} radius={radius}/>
-                    {/* <cylinderGeometry args={[0.1, 0.1, 1, 32, 1]} /> */}
                 </Subtraction>
+                <Addition position={[position[0], -thickness, position[2]]}>
+                    {/* <cylinderGeometry args={[0.1, 0.1, 1, 32, 1]} /> */}
+                    {/* <CaseGeometry width={width-thickness*2} depth={depth-thickness*2} height={height} radius={radius}/> */}
+                    <Geometry>
+                        <Base position={[0, 0, 0]}>
+                            <CaseGeometry width={width-(thickness+offset)*2} depth={depth-(thickness+offset)*2} height={thickness} radius={radius}/>
+                        </Base>
+                        <Subtraction position={[0, 0, 0]}>
+                            <CaseGeometry width={width-(thickness*2+offset)*2} depth={depth-(thickness*2+offset)*2} height={thickness} radius={radius}/>
+                        </Subtraction>
+                    </Geometry>
+
+                </Addition>
             </Geometry>
             <meshStandardMaterial color="#2A8AFF" />
         </mesh>
@@ -86,10 +99,11 @@ const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) =>
     radius: number;
     split: SplitParameter;
     gap: number;
+    offset: number;
     thickness: number;
   };
   //add props
-  const Cases = ({ width, depth, height, radius, split, gap, thickness }: CasesProps) => {
+  const Cases = ({ width, depth, height, radius, split, gap, offset, thickness }: CasesProps) => {
     
     const dividedWidth = (width-(split.x-1)*gap)/split.x
     const dividedDepth = (depth-(split.y-1)*gap)/split.y
@@ -103,7 +117,7 @@ const Case = ({ width, depth, height, radius, thickness, position}:CaseProps) =>
                     const list = [];
                     for (let i = 0; i < split.x; i++) {
                         for (let j = 0; j < split.y; j++) {
-                            list.push(<Case position={[(dividedWidth+gap)*i,0,(dividedDepth+gap)*j]} width={dividedWidth} depth={dividedDepth} height={height} radius={radius} thickness={thickness}></Case>);
+                            list.push(<Case key={i+'_'+j} position={[(dividedWidth+gap)*i,0,(dividedDepth+gap)*j]} width={dividedWidth} depth={dividedDepth} height={height} radius={radius} thickness={thickness} offset={offset}></Case>);
                         }
                     }
                     return list;

@@ -9,7 +9,7 @@ import { useControls } from "leva";
 
 
 function Scene() {
-  const { height, depth, width, radius, splitX, splitY } = useControls({
+  const { height, depth, width, radius, splitX, splitY, splitZ, offset } = useControls({
     height: {
       value: .5,
       min: 0,
@@ -46,6 +46,18 @@ function Scene() {
       min: 1,
       max: 10,
       step: 1,
+    },
+    splitZ: {
+      value: 3,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    offset: {
+      value: 0.005,
+      min: 0,
+      max: 1,
+      step: 0.001,
     }
   })
   return (
@@ -54,8 +66,9 @@ function Scene() {
       <OrbitControls />
       <Cases width={width} depth={depth} height={height} radius={radius} split={{
           x: splitX,
-          y: splitY
-        }} gap={0.01} thickness={.01} />
+          y: splitY,
+          z: splitZ
+        }} gap={0.01} thickness={.01} offset={offset}/>
       <primitive object={new THREE.AxesHelper(10)} />
       <ambientLight/>
       <hemisphereLight intensity={0.4} groundColor="white" />
