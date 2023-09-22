@@ -71,10 +71,10 @@ const Case = ({ width, depth, height, radius, thickness, position, offset}:CaseP
                 <Base rotation={[0, 0, 0]} position={position}>
                     <CaseGeometry width={width} depth={depth} height={height} radius={radius}/>
                 </Base>
-                <Subtraction rotation={[0, 0, 0]} position={[position[0], thickness, position[2]]}>
+                <Subtraction rotation={[0, 0, 0]} position={[position[0], position[1]+thickness, position[2]]}>
                     <CaseGeometry width={width-thickness*2} depth={depth-thickness*2} height={height} radius={radius}/>
                 </Subtraction>
-                <Addition position={[position[0], -thickness, position[2]]}>
+                <Addition position={[position[0], position[1]-thickness, position[2]]}>
                     {/* <cylinderGeometry args={[0.1, 0.1, 1, 32, 1]} /> */}
                     {/* <CaseGeometry width={width-thickness*2} depth={depth-thickness*2} height={height} radius={radius}/> */}
                     <Geometry>
@@ -107,6 +107,7 @@ const Case = ({ width, depth, height, radius, thickness, position, offset}:CaseP
     
     const dividedWidth = (width-(split.x-1)*gap)/split.x
     const dividedDepth = (depth-(split.y-1)*gap)/split.y
+    const dividedHeight = (height-(split.z-1)*gap)/split.z
     return(
         // BOX軍を中央寄せ
         <group position={[dividedWidth/2-width/2,0,dividedDepth/2-depth/2]}>
@@ -117,7 +118,9 @@ const Case = ({ width, depth, height, radius, thickness, position, offset}:CaseP
                     const list = [];
                     for (let i = 0; i < split.x; i++) {
                         for (let j = 0; j < split.y; j++) {
-                            list.push(<Case key={i+'_'+j} position={[(dividedWidth+gap)*i,0,(dividedDepth+gap)*j]} width={dividedWidth} depth={dividedDepth} height={height} radius={radius} thickness={thickness} offset={offset}></Case>);
+                            for (let k = 0; k < split.z; k++) {
+                                list.push(<Case key={i+'_'+j} position={[(dividedWidth+gap)*i,(dividedHeight+gap)*k,(dividedDepth+gap)*j]} width={dividedWidth} depth={dividedDepth} height={dividedHeight} radius={radius} thickness={thickness} offset={offset}></Case>);
+                            }
                         }
                     }
                     return list;
