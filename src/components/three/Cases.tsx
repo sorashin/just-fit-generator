@@ -3,6 +3,7 @@ import { useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as THREE from 'three';
 import { Geometry, Base, Subtraction, Addition } from '@react-three/csg'
 import { SplitParameter} from '@/store/parameterAtoms';
+import { Edges } from '@react-three/drei';
 
 
 type CaseGeometryProps = {
@@ -53,15 +54,7 @@ type CaseProps = {
     length: number;
   };
 
-// const Sample = ({ width, depth, height, radius, thickness, position}:CaseProps) => {
-//         return(
-//             <mesh position={[0,2,0]} >
-//                 <CaseGeometry width={width} depth={depth} height={height} radius={radius}/>
-//                 {/* mesh physical material */}
-//                 <meshPhysicalMaterial color="#0cf73f" />
-//             </mesh>
-//         )
-//     }
+
 
 const Case = ({ split, width, depth, height, radius, gap,thickness, position, offset, length}:CaseProps) => {
     useEffect(()=>{
@@ -111,6 +104,7 @@ const Case = ({ split, width, depth, height, radius, gap,thickness, position, of
                 </Addition>
             </Geometry>
             <meshStandardMaterial color="#2A8AFF" />
+            
         </instancedMesh>
     );
   };
@@ -131,12 +125,9 @@ const Case = ({ split, width, depth, height, radius, gap,thickness, position, of
     const dividedDepth = (depth-(split.y-1)*gap)/split.y
     const dividedHeight = (height-(split.z-1)*gap)/split.z
     
-    
-    
     return(
         // BOX軍を中央寄せ
         <group position={[dividedWidth/2-width/2,0,dividedDepth/2-depth/2]}>
-
             <Case length ={split.x*split.y*split.z} split={split} width={dividedWidth} depth={dividedDepth} height={dividedHeight} radius={radius} gap={gap} thickness={thickness} offset={offset} position={[0,0,0]}></Case>
         </group>
         
