@@ -3,7 +3,6 @@ import { useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as THREE from 'three';
 import { Geometry, Base, Subtraction, Addition } from '@react-three/csg'
 import { SplitParameter} from '@/store/parameterAtoms';
-import { Edges } from '@react-three/drei';
 
 
 type CaseGeometryProps = {
