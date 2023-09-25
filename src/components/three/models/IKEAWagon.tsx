@@ -16,7 +16,7 @@ type GLTFResult = GLTF & {
 };
 
 export function IKEAWagon(props: JSX.IntrinsicElements["group"]) {
-  const { nodes } = useGLTF("/model/IKEA-wagon.glb") as GLTFResult;
+  const { nodes } = useGLTF("/IKEA-wagon.glb") as GLTFResult;
   
   return (
     <group {...props} dispose={null} position={[0, -8.3, 0]}
@@ -33,4 +33,4 @@ export function IKEAWagon(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("/model/IKEA-wagon.glb");
+useGLTF.preload("/IKEA-wagon.glb");
