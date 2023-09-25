@@ -52,12 +52,12 @@ function Rhino3dmSample() {
   return (
     <>
       <Scene />
-      {/* <p>
+      <p>
         {sphere
           ? "生成された Sphere の直径は " + sphere.diameter + " です。"
           : "Sphere はまだ作成されていません"}
-      </p> */}
-      {/* <input type="range" min="1" max="100" onChange={onChange} /> */}
+      </p>
+      <input type="range" min="1" max="100" onChange={onChange} />
       <button 
         onClick={()=>downloadSphereAsStl()}
         className="px-4 py-2 text-base text-white rounded-md bg-black hover:bg-gray-700 z-10 absolute right-4 bottom-4"
